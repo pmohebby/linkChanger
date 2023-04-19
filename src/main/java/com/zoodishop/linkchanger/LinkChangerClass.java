@@ -1,5 +1,8 @@
 package com.zoodishop.linkchanger;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zoodishop.linkchanger.dto.VmessDto;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -9,6 +12,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -38,20 +42,58 @@ public class LinkChangerClass extends TelegramLongPollingBot {
                 }
             }
             if (userRole.equals("member") || userRole.equals("administrator") || userRole.equals("creator")) {
-                if (messageText.startsWith("vless")) {
-                    messageText = messageText.replace("mamadbyavar.ir", "zoodishop.com");
+                if (messageText.startsWith("vless") || messageText.startsWith("trojan")) {
+                    var host = messageText.substring(messageText.lastIndexOf("@") + 1, messageText.indexOf(":"));
+                    if (host.equals("server1.zoodishop.com")) {
+                        messageText = messageText.replace("server1.zoodishop.com", "antispam.itresaneh.tk");
+                    }
+                    if (host.equals("server2.zoodishop.com")) {
+                        messageText = messageText.replace("server2.zoodishop.com", "khabar.itresaneh.tk");
+                    }
+                    if (host.equals("server3.zoodishop.com")) {
+                        messageText = messageText.replace("server3.zoodishop.com", "mostanad.itresaneh.tk");
+                    }
+                    if (host.equals("server4.zoodishop.com")) {
+                        messageText = messageText.replace("server4.zoodishop.com", "qozaresh.itresaneh.tk");
+                    } else {
+                        messageText = ":(";
+                    }
                     sendMessageText(messageText, userId);
                 }
                 if (messageText.startsWith("vmess")) {
                     var str = messageText.substring(messageText.lastIndexOf("://") + 3);
                     byte[] decoded = Base64.getDecoder().decode(str);
                     String decodedStr = new String(decoded, StandardCharsets.UTF_8);
-                    decodedStr = decodedStr.replace("mamadbyavar.ir", "zoodishop.com");
+                    VmessDto vmessDto = ConvertJsonToModelVmess(decodedStr);
+                    var subDomain = vmessDto.getAdd();
+                    if (subDomain.equals("server1.zoodishop.com")) {
+                        decodedStr = decodedStr.replace("server1.zoodishop.com", "antispam.itresaneh.tk");
+                    }
+                    if (subDomain.equals("server2.zoodishop.com")) {
+                        decodedStr = decodedStr.replace("server2.zoodishop.com", "khabar.itresaneh.tk");
+                    }
+                    if (subDomain.equals("server3.zoodishop.com")) {
+                        decodedStr = decodedStr.replace("server3.zoodishop.com", "mostanad.itresaneh.tk");
+                    }
+                    if (subDomain.equals("server4.zoodishop.com")) {
+                        decodedStr = decodedStr.replace("server4.zoodishop.com", "qozaresh.itresaneh.tk");
+                    }
                     byte[] encoded = Base64.getEncoder().encode(decodedStr.getBytes());
                     sendMessageText("vmess://" + new String(encoded, StandardCharsets.UTF_8), userId);
                 }
             }
         }
+    }
+
+    private VmessDto ConvertJsonToModelVmess(String input) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(input, new TypeReference<VmessDto>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @SneakyThrows
@@ -71,11 +113,11 @@ public class LinkChangerClass extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "ThunderVpn_ConfigChangerBot";
+        return System.getenv("bot_username");
     }
 
     @Override
     public String getBotToken() {
-        return "6024382997:AAHX45NzQ_8ZaU-iD5BeybDn7Kj7-uSr7H8";
+        return System.getenv("bot_token");
     }
 }

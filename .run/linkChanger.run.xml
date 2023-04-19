@@ -1,0 +1,39 @@
+<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="linkChanger" type="MavenRunConfiguration" factoryName="Maven">
+        <MavenSettings>
+            <option name="myGeneralSettings"/>
+            <option name="myRunnerSettings"/>
+            <option name="myRunnerParameters">
+                <MavenRunnerParameters>
+                    <option name="profiles">
+                        <set/>
+                    </option>
+                    <option name="goals">
+                        <list>
+                            <option value="clean"/>
+                            <option value="spring-boot:run"/>
+                        </list>
+                    </option>
+                    <option name="pomFileName"/>
+                    <option name="profilesMap">
+                        <map/>
+                    </option>
+                    <option name="resolveToWorkspace" value="true"/>
+                    <option name="workingDirPath" value="$PROJECT_DIR$"/>
+                </MavenRunnerParameters>
+            </option>
+        </MavenSettings>
+        <method v="2"/>
+    </configuration>
+    <configuration default="false" name="linkChanger" type="JarApplication">
+        <option name="JAR_PATH" value="$PROJECT_DIR$/target/linkChanger-1.0.jar"/>
+        <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$"/>
+        <option name="ALTERNATIVE_JRE_PATH"/>
+        <envs>
+            <env name="bot_username" value="ThunderVpn_ConfigChanger_bot"/>
+            <env name="bot_token" value="5986468301:AAFp1dDaIcSZHp_DJnnmxLIo5rpNM1mZFtY"/>
+        </envs>
+        <module name="linkChanger"/>
+        <method v="2"/>
+    </configuration>
+</component>
