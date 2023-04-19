@@ -30,9 +30,11 @@ public class LinkChangerClass extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             var userId = update.getMessage().getFrom().getId();
+            var userName = update.getMessage().getFrom().getUserName();
             var messageText = update.getMessage().getText();
             var userRole = checkChannelMember(userId);
             if (messageText.equals("/start")) {
+                System.out.println(userName + "( " + userId +" ) is "+userRole);
                 if (!userRole.equals("kicked") && !userRole.equals("left") && !userRole.equals("restricted")) {
                     sendMessageText("سلام برای تغییر کانفیگ ، کانفیگت رو بفرست تا تغییر بدم و کانفیگ جدید برات بفرستم \n", userId);
                     onClosing();
@@ -42,18 +44,19 @@ public class LinkChangerClass extends TelegramLongPollingBot {
                 }
             }
             if (userRole.equals("member") || userRole.equals("administrator") || userRole.equals("creator")) {
+                System.out.println("userConfig is: " + messageText);
                 if (messageText.startsWith("vless") || messageText.startsWith("trojan")) {
-                    var host = messageText.substring(messageText.lastIndexOf("@") + 1, messageText.indexOf(":"));
+                    var configId = messageText.substring(messageText.lastIndexOf("://") + 3, messageText.indexOf("@"));
+                    var address = messageText.substring(messageText.lastIndexOf("@") + 1, messageText.indexOf("?"));
+                    var host = address.substring(0, address.indexOf(":"));
+                    var port = address.substring(address.lastIndexOf(":") + 1);
                     if (host.equals("server1.zoodishop.com")) {
                         messageText = messageText.replace("server1.zoodishop.com", "antispam.itresaneh.tk");
-                    }
-                    if (host.equals("server2.zoodishop.com")) {
+                    } else if (host.equals("server2.zoodishop.com")) {
                         messageText = messageText.replace("server2.zoodishop.com", "khabar.itresaneh.tk");
-                    }
-                    if (host.equals("server3.zoodishop.com")) {
+                    }else if (host.equals("server3.zoodishop.com")) {
                         messageText = messageText.replace("server3.zoodishop.com", "mostanad.itresaneh.tk");
-                    }
-                    if (host.equals("server4.zoodishop.com")) {
+                    }else if (host.equals("server4.zoodishop.com")) {
                         messageText = messageText.replace("server4.zoodishop.com", "qozaresh.itresaneh.tk");
                     } else {
                         messageText = ":(";
